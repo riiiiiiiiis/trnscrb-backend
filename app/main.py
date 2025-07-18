@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+import logging
 
 from .database import engine, Base
 from .api import videos, worker
@@ -29,6 +30,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Log CORS configuration for transparency
+logger = logging.getLogger(__name__)
+logger.info(f"CORS configured with origins: {settings.cors_origins}")
 
 # Include routers
 app.include_router(videos.router, prefix="/api/videos", tags=["videos"])
